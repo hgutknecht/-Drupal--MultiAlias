@@ -13,7 +13,7 @@ function multialias_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
   // Only do this for product nodes - Hans: Added press releases
 	if ($node->type == 'product' || $node->type == 'page_brand' || $node->type == 'press_release') {
 	  
-		switch($op){
+		switch($op) {
 		
 		case 'prepare':
 			$node->pathauto_perform_alias = 0;
@@ -225,5 +225,23 @@ function multialias_submit_handler($form, &$form_state) {
 			drupal_set_message('Product Alias <em>['.$node->nid.'] for ' .$node->title. '</em> was deleted.');
 		}
 	}
+}
+
+// Admin settings
+// ToDo - List of all node types with options to add new auto aliasing.
+
+function multialias_admin() {
+  $form = array();
+
+  $form['alias'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Alias'),
+    '#size' => 10,
+    '#maxlength' => 10,
+    '#description' => t("Enter an alias"),
+    '#required' => TRUE,
+  );
+
+  return system_settings_form($form);
 }
 
