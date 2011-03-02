@@ -144,8 +144,8 @@ function _get_path_record($node_path, $alias) {
  * @access public
  * @return void
  */
-function multialias_form_alter(&$form, &$form_state, $form_id) {
-  
+//function multialias_form_alter(&$form, &$form_state, $form_id) {
+//  
 //	if ($form_id == 'product_node_form' || $form_id == 'page_brand_node_form' || $form_id == 'press_release_node_form') {
 //		unset($form['path']['path']['#default_value']);
 //    /*  $form['path'] */
@@ -200,8 +200,8 @@ function multialias_form_alter(&$form, &$form_state, $form_id) {
 //	
 //		}
 //	}
-
-}
+//
+//}
 
 /**
  * multialiasr_submit_handler 
@@ -245,26 +245,46 @@ function multialias_admin() {
   return system_settings_form($form);
 }
 
-/*****
+/*
 * @JRW
 * _multialias_create_pattern
 * create a pattern in the variable table like pathauto does.
 * create multialias variables for node paths
-******/
-function _multialias_create_pattern($multialias_variable_name, $pattern){
-  //the base pattern for multialias variables
+*/
+function _multialias_create_pattern($multialias_variable_name, $pattern) {
+  //Set the variable
   variable_set($multialias_variable_name, $pattern);
   return;
 }
 
-/*****
+/*
 * @JRW
 * _multialias_get_number_of_multialiases_per_content_type
 * return number of multialiases stored based on content type
-******/
-function _multialias_get_number_of_multialiases_per_content_type($content_type){
+*/
+function _multialias_get_number_of_multialiases_per_content_type($content_type) {
   $variable_name = "multialias_node_" . $content_type . "_pattern";
   $results = array();
   $results = db_fetch_array(db_query("SELECT * FROM {variable} WHERE name LIKE '\%%s\%'", $variable_name));
   return count($results);
+}
+
+/*
+* @JRW
+* multialias_form_alter 
+* implementation of hook_form_alter to change the auto-generated aliases form
+*/
+function multialias_form_alter(&$form, &$form_state, $form_id) {
+  //Debug code
+  //print_r($form_id);
+}
+
+/*
+* @JRW
+* multialias_submit_handler 
+* 
+*/
+function multialias_submit_handler($form, &$form_state) {
+  //Put code here to actually read the variables from the form and submit them as an array
+  //into the variables table
 }
