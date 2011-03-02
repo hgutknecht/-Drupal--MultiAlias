@@ -275,8 +275,10 @@ function _multialias_get_number_of_multialiases_per_content_type($content_type) 
 * implementation of hook_form_alter to change the auto-generated aliases form
 */
 function multialias_form_alter(&$form, &$form_state, $form_id) {
-  //Debug code
-  //print_r($form_id);
+  //Execute only on the pathauto admin settings screen
+  if($form_id == "pathauto_admin_settings") {
+    //do stuff here to alter the form
+  }
 }
 
 /*
@@ -287,4 +289,31 @@ function multialias_form_alter(&$form, &$form_state, $form_id) {
 function multialias_submit_handler($form, &$form_state) {
   //Put code here to actually read the variables from the form and submit them as an array
   //into the variables table
+}
+
+/*
+* @JRW
+* multialias_nodeapi 
+* An implementation of hook_nodeapi
+*/
+function multialias_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  switch($op) {
+    case 'prepare':
+      //Turn off pathauto, disabling this for now, I want to work with pathauto
+      //$node->pathauto_perform_alias = 0;
+    break;
+	
+	case 'insert':
+	break;
+	    
+	case 'update':
+	break;
+	    
+	case 'view':
+	break;
+	    
+    default:
+    break;
+		
+  }
 }
