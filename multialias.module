@@ -215,6 +215,9 @@ module_load_include('inc', 'pathauto', 'pathauto');
  * @HJG
  * Permissions for the Multialias Module
  * Implementation of hook_perm()
+ *
+ * To use this if (user_access('admin multialias url aliases')) {} and (user_access('create multialias url aliases')) {}
+ *
  **/
 function multialias_perm() {
   return array('admin multialias url aliases','create multialias url aliases');
