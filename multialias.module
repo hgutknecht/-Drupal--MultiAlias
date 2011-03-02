@@ -1,7 +1,6 @@
 <?php
-
+  
 module_load_include('inc', 'pathauto', 'pathauto');
-
 /**
  * Implementation of hook_nodeapi
  *
@@ -118,22 +117,6 @@ module_load_include('inc', 'pathauto', 'pathauto');
 //	return;
 //}
 
-/**
- * _get_path_record
- * This is a small helper function I created to return the raw row object for a given source
- * destination objects.
- * 
- * @param $node_path: The default node path of the node in question ie "node/195"
- * @param $alias: The alias to check if it exists
- * returns an array or null object if no results
- **/
-function _get_path_record($node_path, $alias) {
-  
- $results = array();
- $results = db_fetch_array(db_query("SELECT * FROM {url_alias} WHERE src = '%s' and dst = '%s'", $node_path, $alias));
- return $results;
-}
-
 
 /**
  * multialias_form_alter 
@@ -227,22 +210,29 @@ function _get_path_record($node_path, $alias) {
 //	}
 //}
 
-// Admin settings
-// ToDo - List of all node types with options to add new auto aliasing.
 
-function multialias_admin() {
-  $form = array();
+/**
+ * @HJG
+ * Permissions for the Multialias Module
+ * Implementation of hook_perm()
+ **/
+function multialias_perm() {
+  return array('admin multialias url aliases','create multialias url aliases');
+}
 
-  $form['alias'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Alias'),
-    '#size' => 10,
-    '#maxlength' => 10,
-    '#description' => t("Enter an alias"),
-    '#required' => TRUE,
-  );
-
-  return system_settings_form($form);
+/**
+ * _get_path_record
+ * This is a small helper function I created to return the raw row object for a given source
+ * destination objects.
+ * 
+ * @param $node_path: The default node path of the node in question ie "node/195"
+ * @param $alias: The alias to check if it exists
+ * returns an array or null object if no results
+ **/
+function _get_path_record($node_path, $alias) {
+ $results = array();
+ $results = db_fetch_array(db_query("SELECT * FROM {url_alias} WHERE src = '%s' and dst = '%s'", $node_path, $alias));
+ return $results;
 }
 
 /*
@@ -283,21 +273,37 @@ function multialias_form_alter(&$form, &$form_state, $form_id) {
 	  '#title' => t('MultiAlias Node Paths'),
 	  '#tree' => TRUE,
 	  '#collapsed' => 1,
-	  '#collapsible' => 1,
+	  '#collapsible' => 1
 	);
 	foreach (node_get_types('names') as $node_type => $node_name) {
+	  // dsm($node_type);
+	  // $form['multialias_nodes'] = t('Pattern for all @node_type paths', array('@node_type' => $node_name));
+	  
 	  $form['multialias_nodes'][$node_type . '_multialias_field'] = array(
 	  '#description' => 'test',
 	  0 => array(
-	    '#type' => 'text_textfield',
-	    '#title' => 'Multialias path(s) for ' . $node_type,
+	    '#type' => 'textfield',
+	    '#title' => 'Current pattern for all ' . $node_type . ' paths (set above)',
 	    ),
 	  1 => array(
-	    '#type' => 'text_textfield',
+	    '#type' => 'textfield',
+	    '#title' => 'Multialias pattern(s) for ' . $node_type . ' paths',
 	    ),
+	  2 => array(
+	    '#type' => 'textfield'
+	    )
 	  );
+	  
 	}
-	//print_r($form);
+	// dsm($form);
+	// TODO - fill in the replacement patterns available 
+	$form['multialias_nodes']['token_help'] = array(
+    '#title' => t('Replacement patterns'),
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#description' => t('Use -raw replacements for text to avoid problems with HTML entities.'),
+  );
   }
   //print_r($form);
 }
@@ -324,14 +330,14 @@ function multialias_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       //$node->pathauto_perform_alias = 0;
     break;
 	
-	case 'insert':
-	break;
+	  case 'insert':
+	  break;
 	    
-	case 'update':
-	break;
+	  case 'update':
+	  break;
 	    
-	case 'view':
-	break;
+	  case 'view':
+	  break;
 	    
     default:
     break;
