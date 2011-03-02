@@ -276,9 +276,30 @@ function _multialias_get_number_of_multialiases_per_content_type($content_type) 
 */
 function multialias_form_alter(&$form, &$form_state, $form_id) {
   //Execute only on the pathauto admin settings screen
+  //TODO: Give this fieldset a weight of 3 so it appears after NODE PATHS in the form
   if($form_id == "pathauto_admin_settings") {
-    //do stuff here to alter the form
+    $form['multialias_nodes'] = array(
+	  '#type' => 'fieldset',
+	  '#title' => t('MultiAlias Node Paths'),
+	  '#tree' => TRUE,
+	  '#collapsed' => 1,
+	  '#collapsible' => 1,
+	);
+	foreach (node_get_types('names') as $node_type => $node_name) {
+	  $form['multialias_nodes'][$node_type . '_multialias_field'] = array(
+	  '#description' => 'test',
+	  0 => array(
+	    '#type' => 'text_textfield',
+	    '#title' => 'Multialias path(s) for ' . $node_type,
+	    ),
+	  1 => array(
+	    '#type' => 'text_textfield',
+	    ),
+	  );
+	}
+	//print_r($form);
   }
+  //print_r($form);
 }
 
 /*
@@ -294,7 +315,7 @@ function multialias_submit_handler($form, &$form_state) {
 /*
 * @JRW
 * multialias_nodeapi 
-* An implementation of hook_nodeapi
+* Creates the Aliases in the database when the node is saved
 */
 function multialias_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
   switch($op) {
