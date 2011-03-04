@@ -1,5 +1,35 @@
 <?php
+/**
+ * Implementation of hook_schema()
+ *
+ * TODO: Describe the module's data model
+ *
+ */
+function multialias_schema() {
+  // YO: Create the tables we need then use schema module to getnerate proper schema syntax for this
+  
+  // $schema = array();
+  // return $schema;
+}
 
+/**
+ * Implementation of hook_install()
+ *
+ * Perform initial setup tasks
+ *
+ */
+function multialias_install() {
+  // Perform install stuff
+  // drupal_install_schema('multialias');
+}
+
+/**
+ * Implementation of hook_uninstall()
+ *
+ * Perform final cleanup tasks
+ *
+ */
 function multialias_uninstall() {
   //perform uninstall stuff
+  // drupal_install_schema('multialias');
 }
