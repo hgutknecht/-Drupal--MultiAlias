@@ -267,49 +267,13 @@ function _multialias_get_number_of_multialiases_per_content_type($content_type) 
 * multialias_form_alter 
 * implementation of hook_form_alter to change the auto-generated aliases form
 */
-//function multialias_form_alter(&$form, &$form_state, $form_id) {
-//  //Execute only on the pathauto admin settings screen
-//  //TODO: Give this fieldset a weight of 3 so it appears after NODE PATHS in the form
-//  if($form_id == "pathauto_admin_settings") {
-//    $form['multialias_nodes'] = array(
-//	  '#type' => 'fieldset',
-//	  '#title' => t('MultiAlias Node Paths'),
-//	  '#tree' => TRUE,
-//	  '#collapsed' => 1,
-//	  '#collapsible' => 1
-//	);
-//	foreach (node_get_types('names') as $node_type => $node_name) {
-//	  // dsm($node_type);
-//	  // $form['multialias_nodes'] = t('Pattern for all @node_type paths', array('@node_type' => $node_name));
-//	  
-//	  $form['multialias_nodes'][$node_type . '_multialias_field'] = array(
-//	  '#description' => 'test',
-//	  0 => array(
-//	    '#type' => 'textfield',
-//	    '#title' => 'Current pattern for all ' . $node_type . ' paths (set above)',
-//	    ),
-//	  1 => array(
-//	    '#type' => 'textfield',
-//	    '#title' => 'Multialias pattern(s) for ' . $node_type . ' paths',
-//	    ),
-//	  2 => array(
-//	    '#type' => 'textfield'
-//	    )
-//	  );
-//	  
-//	}
-//	// dsm($form);
-//	// TODO - fill in the replacement patterns available 
-//	$form['multialias_nodes']['token_help'] = array(
-//    '#title' => t('Replacement patterns'),
-//    '#type' => 'fieldset',
-//    '#collapsible' => TRUE,
-//    '#collapsed' => TRUE,
-//    '#description' => t('Use -raw replacements for text to avoid problems with HTML entities.'),
-//  );
-//  }
-//  //print_r($form);
-//}
+function multialias_form_alter(&$form, &$form_state, $form_id) {
+  //Execute only on the pathauto admin settings screen
+  if(strpos($form_id, 'node_form')>0) {
+    $form['#submit'][] = '_multialias_node_form_submit_handler';
+  }
+  //print_r($form);
+}
 
 /*
 * @JRW
@@ -319,7 +283,19 @@ function _multialias_get_number_of_multialiases_per_content_type($content_type) 
 function multialias_submit_handler($form, &$form_state) {
   //Put code here to actually read the variables from the form and submit them as an array
   //into the variables table
+  drupal_set_message("Settings form submit handler invoked");
 }
+
+/*
+* @JRW
+* _multialias_node_form_submit_handler 
+* 
+*/
+function _multialias_node_form_submit_handler($form, &$form_state){
+  //This is the submit handler for when a node that has multialias enabled
+  drupal_set_message("Multialias: Node submit form invoked");	
+}
+
 
 /*
 * @JRW
@@ -429,6 +405,8 @@ function multialias_settings_form() {
     '#type' => 'submit',
     '#value' => t('Save settings'),
   );
+  
+  $form['#submit'][] = 'multialias_submit_handler';
   
   return $form;
 }
