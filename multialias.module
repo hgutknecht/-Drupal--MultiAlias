@@ -347,3 +347,77 @@ function multialias_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 		
   }
 }
+
+/**
+ * Implementation of hook_menu().
+ *
+ * Hook menu registers page callbacks with Drupal's central menu system.
+ * Generate MultiAlias setting menu
+ *
+ */
+function multialias_menu() {
+  $items = array();
+  
+  $items['admin/settings/multialias'] = array(
+    'title' => 'Multialias settings',
+    'description' => 'Configuration options for the multialias module',
+    'page callback' => 'multialias_admin_settings',
+    'access callback' => 'user_access', // TRUE will give access to everyone
+    'access arguments' => array('admin multialias url aliases'),
+  );
+  
+  return $items;
+}
+
+/**
+ * Page callback function for admin/settings/multialias.
+ */
+function multialias_admin_settings() {
+  return drupal_get_form('multialias_settings_form');
+}
+
+/**
+ * Form builder function for multialias_settings_form.
+ */
+function multialias_settings_form() {
+  $form = array();
+  
+  $form['stalker_threshold'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Multialiases - one per line please'),
+    '#description' => t('Enter in as many aliases as you like one per line you can use the replacement pattens below'),
+    '#default_value' => '',
+    '#required' => FALSE,
+  );
+  
+  // dsm($form);
+	// TODO - fill in the replacement patterns available 
+	$form['multialias_nodes']['token_help'] = array(
+    '#title' => t('Replacement patterns'),
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#description' => t('Use -raw replacements for text to avoid problems with HTML entities.'),
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save settings'),
+  );
+  
+  return $form;
+}
+
+/**
+ * Validation function for multialias_admin_settings.
+ */
+function multialias_settings_form_validate(&$form, &$form_state) {
+  // DO FORM VALIDATION !!!!!!
+}
+
+/**
+ * Submission function for multialias_admin_settings.
+ */
+function multialias_settings_form_submit(&$form, &$form_state) {
+  // DO STUFF !!!!
+}
