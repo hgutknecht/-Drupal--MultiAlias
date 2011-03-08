@@ -8,8 +8,29 @@
 function multialias_schema() {
   // YO: Create the tables we need then use schema module to getnerate proper schema syntax for this
   
-  // $schema = array();
-  // return $schema;
+   $schema = array();
+   
+   $schema['multialias_variable'] = array(
+  'description' => t('TODO: please describe this table!'),
+  'fields' => array(
+    'name' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'varchar',
+      'length' => '128',
+      'not null' => TRUE,
+      'default' => '',
+    ),
+    'value' => array(
+      'description' => t('TODO: please describe this field!'),
+      'type' => 'text',
+      'size' => 'big',
+      'not null' => TRUE,
+    ),
+  ),
+  'primary key' => array('name'),
+);
+
+   return $schema;
 }
 
 /**
@@ -20,7 +41,7 @@ function multialias_schema() {
  */
 function multialias_install() {
   // Perform install stuff
-  // drupal_install_schema('multialias');
+   drupal_install_schema('multialias_variable');
 }
 
 /**
@@ -31,5 +52,5 @@ function multialias_install() {
  */
 function multialias_uninstall() {
   //perform uninstall stuff
-  // drupal_install_schema('multialias');
+   drupal_uninstall_schema('multialias_variable');
 }
