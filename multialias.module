@@ -223,33 +223,6 @@ function multialias_perm() {
   return array('admin multialias url aliases','create multialias url aliases');
 }
 
-/**
- * _get_path_record
- * This is a small helper function I created to return the raw row object for a given source
- * destination objects.
- * 
- * @param $node_path: The default node path of the node in question ie "node/195"
- * @param $alias: The alias to check if it exists
- * returns an array or null object if no results
- **/
-function _get_path_record($node_path, $alias) {
- $results = array();
- $results = db_fetch_array(db_query("SELECT * FROM {url_alias} WHERE src = '%s' and dst = '%s'", $node_path, $alias));
- return $results;
-}
-
-/*
-* @JRW
-* _multialias_create_pattern
-* create a pattern in the variable table like pathauto does.
-* create multialias variables for node paths
-*/
-function _multialias_create_pattern($multialias_variable_name, $pattern) {
-  //Set the variable
-  variable_set($multialias_variable_name, $pattern);
-  return;
-}
-
 /*
 * @JRW
 * _multialias_get_number_of_multialiases_per_content_type
@@ -273,17 +246,6 @@ function multialias_form_alter(&$form, &$form_state, $form_id) {
     $form['#submit'][] = '_multialias_node_form_submit_handler';
   }
   //print_r($form);
-}
-
-/*
-* @JRW
-* multialias_submit_handler 
-* 
-*/
-function multialias_submit_handler($form, &$form_state) {
-  //Put code here to actually read the variables from the form and submit them as an array
-  //into the variables table
-  drupal_set_message("Settings form submit handler invoked");
 }
 
 /*
@@ -406,8 +368,6 @@ function multialias_settings_form() {
     '#value' => t('Save settings'),
   );
   
-  $form['#submit'][] = 'multialias_submit_handler';
-  
   return $form;
 }
 
@@ -423,4 +383,23 @@ function multialias_settings_form_validate(&$form, &$form_state) {
  */
 function multialias_settings_form_submit(&$form, &$form_state) {
   // DO STUFF !!!!
+  drupal_set_message("Multialias admin form submit handler invoked");
+}
+
+/**
+ * @JRW
+ * multialias_variable_set
+ * sets multialias variables just like variable_set does
+ */
+ 
+function multialias_variable_set($name, $value) {
+  global $conf;
+
+  $serialized_value = serialize($value);
+  db_query("UPDATE {multialias_variable} SET value = '%s' WHERE name = '%s'", $serialized_value, $name);
+  if (!db_affected_rows()) {
+    @db_query("INSERT INTO {multialias_variable} (name, value) VALUES ('%s', '%s')", $name, $serialized_value);
+  }
+  
+  $conf[$name] = $value;
 }
