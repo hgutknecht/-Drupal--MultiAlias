@@ -381,15 +381,40 @@ function multialias_admin_settings() {
  */
 function multialias_settings_form() {
   $form = array();
-  
-  $form['stalker_threshold'] = array(
-    '#type' => 'textarea',
-    '#title' => t('Multialiases - one per line please'),
-    '#description' => t('Enter in as many aliases as you like one per line you can use the replacement pattens below'),
-    '#default_value' => '',
-    '#required' => FALSE,
-  );
-  
+  $form['multialias_nodes'] = array(
+	  '#type' => 'fieldset',
+	  '#title' => t('MultiAlias Node Paths'),
+	  '#tree' => TRUE,
+	  '#collapsed' => 0,
+	  '#collapsible' => 0
+	);
+  //Loop through each content type	
+  foreach (node_get_types('names') as $node_type => $node_name) {
+  	  //get the current pathauto pattern for the content type
+  	  $node_pathauto_pattern = variable_get("pathauto_node_" . $node_type . "_pattern", NULL);
+  	  
+  	  if(!$node_pathauto_pattern){
+  	    $node_pathauto_pattern = variable_get("pathauto_node_pattern", NULL);
+  	  }
+  	  
+  	  //Build the form
+  	  $form['multialias_nodes'][$node_type . '_multialias_field'] = array(
+	  '#description' => 'test',
+	  0 => array(
+	    '#type' => 'textfield',
+	    '#title' => 'Current pattern for all ' . $node_type . ' paths (set in Pathauto)',
+	    '#value' => $node_pathauto_pattern,
+	    '#disabled' => 1,
+	    ),
+  	  );
+	  $form['multialias_nodes'][$node_type . 'stalker_threshold'] = array(
+	    '#type' => 'textarea',
+	    '#title' => t('Multialiases - one per line please'),
+	    '#description' => t('Enter in as many aliases as you like one per line you can use the replacement pattens below'),
+	    '#default_value' => '',
+	    '#required' => FALSE,
+	  );
+  }
   // dsm($form);
 	// TODO - fill in the replacement patterns available 
 	$form['multialias_nodes']['token_help'] = array(
