@@ -41,7 +41,7 @@ function multialias_schema() {
  */
 function multialias_install() {
   // Perform install stuff
-   drupal_install_schema('multialias_variable');
+   drupal_install_schema('multialias');
 }
 
 /**
@@ -52,5 +52,5 @@ function multialias_install() {
  */
 function multialias_uninstall() {
   //perform uninstall stuff
-   drupal_uninstall_schema('multialias_variable');
+   drupal_uninstall_schema('multialias');
 }
