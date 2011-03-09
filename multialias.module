@@ -345,7 +345,7 @@ function multialias_settings_form() {
 	    '#disabled' => 1,
 	    ),
   	  );
-	  $form['multialias_nodes'][$node_type . 'stalker_threshold'] = array(
+	  $form['multialias_nodes'][$node_type . '_stalker_threshold'] = array(
 	    '#type' => 'textarea',
 	    '#title' => t('Multialiases - one per line please'),
 	    '#description' => t('Enter in as many aliases as you like one per line you can use the replacement pattens below'),
@@ -382,14 +382,15 @@ function multialias_settings_form_validate(&$form, &$form_state) {
  * Submission function for multialias_admin_settings.
  */
 function multialias_settings_form_submit(&$form, &$form_state) {
-  // DO STUFF !!!!
   drupal_set_message("Multialias admin form submit handler invoked");
+//  print_r($form['multialias_nodes']);
 }
 
 /**
  * @JRW
  * multialias_variable_set
  * sets multialias variables just like variable_set does
+ * this function is a direct copy/paste from variable_set
  */
  
 function multialias_variable_set($name, $value) {
