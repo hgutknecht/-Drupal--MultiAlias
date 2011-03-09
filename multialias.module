@@ -340,7 +340,8 @@ function multialias_settings_form() {
 	  '#description' => 'test',
 	  0 => array(
 	    '#type' => 'textfield',
-	    '#title' => 'Current pattern for all ' . $node_type . ' paths (set in Pathauto). To edit these default patterns go to <a href="admin/build/path/pathauto">admin/build/path/pathauto</a>',
+	    '#title' => 'Current pattern for all ' . $node_type . ' paths (set in Pathauto).',
+	    '#description' => 'To edit these default patterns go to <a href="admin/build/path/pathauto">admin/build/path/pathauto</a>',
 	    '#value' => $node_pathauto_pattern,
 	    '#disabled' => 1,
 	    ),
