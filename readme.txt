@@ -7,11 +7,11 @@ Multialias is primarily for site builders and developers who want to do conditio
 
 Example: A content editor has a site that has a content type called "Product."  In the field settings there are two fieldgroups, one fieldgroup that displays only when the path is "/products/[title-raw]" and another set of fields that only displays when the path is "/products/drupal/[title-raw]". This way a content editor has a single point of administration for related content that resolves at muliple paths.
 
-For more information on Multialias see ...drupal.org (replace with sandbox url)
+For more information on Multialias see http://drupal.org/sandbox/LSU_JBob/1085970
 
 Requirements
 ===============
-Multialias requires the pathauto module. 
+Multialias requires the pathauto, CCK and token modules. 
 
 Installation
 ===============
@@ -28,4 +28,4 @@ Usage
 Contact/Contributors
 ===============
 John Robert Wilson (LSU_JBob, jr@digitalrhino.com)
-Hans Gutknecht (drupal.org - hansyg, hans@digitalrhino.com)
+Hans Gutknecht (hansyg, hans@digitalrhino.com)

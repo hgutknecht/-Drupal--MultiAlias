@@ -1,8 +1,8 @@
-; $Id$
-name = "MultiAlias"
+name = Multialias
 description = "Allows content types to create multiple automatically generated aliases for one node."
 core = 6.x
 package = Other
 
 dependencies[] = path
 dependencies[] = pathauto
+dependencies[] = token

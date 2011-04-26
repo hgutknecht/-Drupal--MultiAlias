@@ -1,0 +1,17 @@
+<?php
+class MultialiasUnitTestCase extends DrupalWebTestCase {
+  protected $privileged_user;
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Multialias basic tests'),
+      'description' => t('Test basic multialias functionality.'),
+      'group' => t('Pathauto'),
+      'dependencies' => array('token','pathauto','path'),
+    );
+  }
+  
+  public function setUp() {
+    parent::setUp('path','token','pathauto');
+  }
+}
